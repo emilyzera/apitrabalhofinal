@@ -1,15 +1,9 @@
-import {
-  Button,
-  Container,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+
+import { Button, Container, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../store/modules/hooks";
-import { selectById as userSelectById } from "../../store/modules/SliceUsuarios/SliceUsuarios";
+import { loginAction, selectById as userSelectById } from "../../store/modules/SliceUsuarios/SliceUsuarios";
+import { useAppSelector, useThunkAppDispatch } from "../../store/modules/hooks";
 import { getUsuarioLogado, setUsuarioLogado } from "../../utils/functions";
 
 const Login = () => {
@@ -21,21 +15,24 @@ const Login = () => {
 
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
+    const thunkDispatch = useThunkAppDispatch();
 
   const existeUsuario = useAppSelector((state) => userSelectById(state, email));
 
-  function executarLogin(): void {
+  const executarLogin = async ( ) => {
     if (email === "" || senha === "")
       return alert("Os dados devem estar preenchidos");
     if (!(existeUsuario && existeUsuario.senha === senha))
       return alert("Usuario e/ou senha incorretos");
-    logar();
-  }
+   logar();
+  };
 
-  function logar(): void {
+ function logar(): void {
     setUsuarioLogado(email);
     navigate("/recados");
   }
+
+  
 
   return (
     <>
@@ -106,4 +103,6 @@ const Login = () => {
   );
 };
 
+
 export default Login;
+

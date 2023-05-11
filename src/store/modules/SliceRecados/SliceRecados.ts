@@ -14,13 +14,10 @@ export interface Recado {
   usuario: string;
 }
 
-export const fetchrecados = createAsyncThunk(
-  "recado/fetchrecados",
-  async () => {
-    const result = await axios.get("https://emilywusttrabalho.onrender.com");
-    return result.data.data;
-  }
-);
+export const fetchrecados = createAsyncThunk("recado/fetchrecados", async () => {
+  const result = await axios.get("https://localhost:10000/recados");
+  return result.data.data;
+});
 
 const adaptadorDosRecados = createEntityAdapter<Recado>({
   selectId: (recado) => recado.id,
