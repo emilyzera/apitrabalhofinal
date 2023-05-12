@@ -8,11 +8,13 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Recado,
-  adicionarRecado,
-} from "../../store/modules/SliceRecados/SliceRecados";
+import { v4 as uuid } from "uuid";
 import { useAppDispatch } from "../../store/modules/hooks";
+import {
+  adicionarRecado,
+  fetchrecados,
+  Recado,
+} from "../../store/modules/SliceRecados/SliceRecados";
 import { getUsuarioLogado } from "../../utils/functions";
 
 function verificaInputs(titulo: string, descricao: string, data: string) {
@@ -22,6 +24,7 @@ function verificaInputs(titulo: string, descricao: string, data: string) {
   }
   return true;
 }
+
 
 const NovoRecado: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -41,6 +44,7 @@ const NovoRecado: React.FC = () => {
     if (!verificaInputs(titulo, descricao, data)) return;
 
     const novoRecado: Recado = {
+      id: uuid(),
       titulo,
       descricao,
       data,
