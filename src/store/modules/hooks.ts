@@ -10,6 +10,7 @@ export type AppThunkDispatch = ThunkDispatch<
   AnyAction
 >;
 
+
 export const useAppDispatch: () => MeuDespachante = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<EstadoDaStore> = useSelector;
 export const useThunkAppDispatch = () =>

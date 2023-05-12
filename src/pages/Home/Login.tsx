@@ -1,10 +1,19 @@
-
-import { Button, Container, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginAction, selectById as userSelectById } from "../../store/modules/SliceUsuarios/SliceUsuarios";
+import {
+  loginAction,
+  selectById as userSelectById,
+} from "../../store/modules/SliceUsuarios/SliceUsuarios";
 import { useAppSelector, useThunkAppDispatch } from "../../store/modules/hooks";
-import { getUsuarioLogado, setUsuarioLogado } from "../../utils/functions";
+import { getUsuarioLogado } from "../../utils/functions";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,24 +24,31 @@ const Login = () => {
 
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
-    const thunkDispatch = useThunkAppDispatch();
+  const thunkDispatch = useThunkAppDispatch();
 
   const existeUsuario = useAppSelector((state) => userSelectById(state, email));
 
-  const executarLogin = async ( ) => {
-    if (email === "" || senha === "")
-      return alert("Os dados devem estar preenchidos");
-    if (!(existeUsuario && existeUsuario.senha === senha))
-      return alert("Usuario e/ou senha incorretos");
-   logar();
-  };
+  const executarLogin = async () => {
+    if (!email || email.length < 6) {
+      alert("Preencha o email com pelo menos 6 letras");
+      return;
+    }
+    if (!senha || senha.length < 6) {
+      alert("Preencha a senha com pelo menos 6 letras");
+      return;
+    }
 
- function logar(): void {
-    setUsuarioLogado(email);
+    const login = {
+      email,
+      senha,
+    };
+    const result = await thunkDispatch(loginAction(login)).unwrap();
+    if (!result.ok) {
+      alert(result.message);
+      return;
+    }
     navigate("/recados");
-  }
-
-  
+  };
 
   return (
     <>
@@ -103,6 +119,4 @@ const Login = () => {
   );
 };
 
-
 export default Login;
-

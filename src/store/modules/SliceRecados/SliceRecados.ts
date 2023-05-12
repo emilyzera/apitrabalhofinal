@@ -15,7 +15,7 @@ export interface Recado {
 }
 
 export const fetchrecados = createAsyncThunk("recado/fetchrecados", async () => {
-  const result = await axios.get("https://localhost:10000/recados");
+  const result = await axios.get("/recados");
   return result.data.data;
 });
 

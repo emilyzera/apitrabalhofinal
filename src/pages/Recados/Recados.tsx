@@ -6,14 +6,16 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CardRecado from "../../componets/CardRecado/CardRecado";
 import MeuModal from "../../componets/MeuModal/MeuModal";
-import { useAppSelector } from "../../store/modules/hooks";
 import {
   fetchrecados,
   selectAll as recadosSelectAll,
 } from "../../store/modules/SliceRecados/SliceRecados";
+import { useAppSelector } from "../../store/modules/hooks";
 import { getUsuarioLogado } from "../../utils/functions";
+import {  useThunkAppDispatch } from "../../store/modules/hooks";
 
 const Recados = () => {
+  const thunkDispatch = useThunkAppDispatch();
   const dispatch: any = useDispatch();
   const navigate = useNavigate();
   dispatch(fetchrecados());
@@ -44,8 +46,13 @@ const Recados = () => {
     } else {
       setExisteRecado(false);
     }
-  });
+    
+    thunkDispatch(fetchrecados());
+  }, [navigate, recadosDoUsuario.length, thunkDispatch]);
+    
+  
 
+ 
   return (
     <>
       <Grid
